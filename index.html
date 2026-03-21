@@ -687,30 +687,54 @@ label{font-size:12px;color:var(--t2);font-weight:500;display:block;}
   <div class="panel" id="tab-listen">
     <div class="pane-hdr">
       <div><div class="pane-title">Listen</div><div class="pane-sub" id="listenSub">Deine To-Do & Einkaufslisten</div></div>
-      <button class="btn btn-blue btn-sm" onclick="showNewListForm()">+ Neue Liste</button>
+      <button class="btn btn-blue btn-sm" onclick="showNewListForm()" id="newListBtn">+ Neue Liste</button>
     </div>
+    <!-- Step 1: Type picker -->
+    <div id="listTypePicker" style="display:none;margin-bottom:20px;">
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:520px;">
+        <div onclick="selectListType('shopping')" style="background:var(--s1);border:2px solid var(--brd);border-radius:14px;padding:20px 14px;text-align:center;cursor:pointer;transition:all .18s;" class="list-type-card" id="ltc-shopping">
+          <div style="font-size:36px;margin-bottom:8px;">🛒</div>
+          <div style="font-size:14px;font-weight:700;color:var(--t1);">Einkauf</div>
+          <div style="font-size:11px;color:var(--t3);margin-top:3px;">Einkaufsliste</div>
+        </div>
+        <div onclick="selectListType('todo')" style="background:var(--s1);border:2px solid var(--brd);border-radius:14px;padding:20px 14px;text-align:center;cursor:pointer;transition:all .18s;" class="list-type-card" id="ltc-todo">
+          <div style="font-size:36px;margin-bottom:8px;">📝</div>
+          <div style="font-size:14px;font-weight:700;color:var(--t1);">Aufgaben</div>
+          <div style="font-size:11px;color:var(--t3);margin-top:3px;">To-Do Liste</div>
+        </div>
+        <div onclick="selectListType('custom')" style="background:var(--s1);border:2px solid var(--brd);border-radius:14px;padding:20px 14px;text-align:center;cursor:pointer;transition:all .18s;" class="list-type-card" id="ltc-custom">
+          <div style="font-size:36px;margin-bottom:8px;">✨</div>
+          <div style="font-size:14px;font-weight:700;color:var(--t1);">Eigene</div>
+          <div style="font-size:11px;color:var(--t3);margin-top:3px;">Packliste etc.</div>
+        </div>
+      </div>
+      <button class="btn btn-ghost btn-sm" onclick="cancelNewList()" style="margin-top:12px;">Abbrechen</button>
+    </div>
+
+    <!-- Step 2: Input form (shown after type selected) -->
     <div id="newListFormWrap" style="display:none;">
       <div class="new-list-form">
-        <h4>Neue Liste erstellen</h4>
-        <label style="margin-bottom:6px;display:block;">Listentyp</label>
-        <div class="list-type-selector" id="listTypeSel">
-          <button class="list-type-opt active" data-type="shopping" onclick="selectListType(this)">🛒 Einkauf</button>
-          <button class="list-type-opt" data-type="todo" onclick="selectListType(this)">📝 Aufgaben</button>
-          <button class="list-type-opt" data-type="custom" onclick="selectListType(this)">✨ Eigene</button>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+          <div id="formTypeIcon" style="font-size:28px;"></div>
+          <div>
+            <div id="formTypeTitle" style="font-size:16px;font-weight:700;color:var(--t1);"></div>
+            <div id="formTypeSub" style="font-size:12px;color:var(--t2);"></div>
+          </div>
+          <button onclick="backToTypePicker()" style="margin-left:auto;background:none;border:1px solid var(--brd);border-radius:7px;padding:4px 10px;font-size:12px;color:var(--t2);cursor:pointer;font-family:var(--font);">← Ändern</button>
         </div>
-        <div id="customListNameWrap" style="display:none;margin-bottom:10px;">
+        <div id="customListNameWrap" style="display:none;margin-bottom:12px;">
           <label>Name der Liste</label>
           <input id="customListName" type="text" placeholder="z.B. Packliste, Wunschliste…"/>
         </div>
-        <label>Punkte hinzufügen</label>
-        <div style="display:flex;gap:8px;margin-top:5px;">
-          <input id="newListItemInp" type="text" placeholder="Punkt eingeben…" onkeydown="if(event.key==='Enter')addNewListItem()"/>
-          <button class="btn btn-blue btn-sm" onclick="addNewListItem()">+</button>
+        <label style="margin-bottom:6px;display:block;">Punkte hinzufügen</label>
+        <div style="display:flex;gap:8px;">
+          <input id="newListItemInp" type="text" placeholder="Punkt eingeben und Enter drücken…" onkeydown="if(event.key==='Enter')addNewListItem()" style="margin:0;"/>
+          <button class="btn btn-blue btn-sm" onclick="addNewListItem()" style="flex-shrink:0;">+</button>
         </div>
         <div id="newListItems" style="margin-top:10px;display:flex;flex-direction:column;gap:5px;"></div>
         <div style="display:flex;gap:8px;margin-top:14px;">
-          <button class="btn btn-blue btn-sm" onclick="createList()">✓ Liste erstellen</button>
-          <button class="btn btn-ghost btn-sm" onclick="cancelNewList()">Abbrechen</button>
+          <button class="btn btn-blue" onclick="createList()">✓ Liste erstellen</button>
+          <button class="btn btn-ghost" onclick="cancelNewList()">Abbrechen</button>
         </div>
       </div>
     </div>
@@ -1929,18 +1953,45 @@ let _newListType='shopping';
 let _newListItems=[];
 let _reminderList=null;
 
-function selectListType(btn){
-  document.querySelectorAll('.list-type-opt').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  _newListType=btn.dataset.type;
-  document.getElementById('customListNameWrap').style.display=_newListType==='custom'?'block':'none';
+function selectListType(type){
+  _newListType=type;
+  const td=LIST_TYPES[type];
+  // Highlight selected card
+  document.querySelectorAll('.list-type-card').forEach(c=>{
+    c.style.borderColor='var(--brd)';c.style.background='var(--s1)';
+  });
+  const card=document.getElementById('ltc-'+type);
+  if(card){card.style.borderColor=td.color;card.style.background=td.colorBg;}
+  // Show form
+  setTimeout(()=>{
+    document.getElementById('listTypePicker').style.display='none';
+    document.getElementById('newListFormWrap').style.display='block';
+    document.getElementById('formTypeIcon').textContent=td.icon;
+    document.getElementById('formTypeTitle').textContent=td.label+' erstellen';
+    document.getElementById('formTypeSub').textContent=type==='shopping'?'Produkte und Zutaten eintragen':type==='todo'?'Aufgaben eintragen':'Eigene Liste';
+    document.getElementById('customListNameWrap').style.display=type==='custom'?'block':'none';
+    _newListItems=[];renderNewListItems();
+    document.getElementById('newListItemInp')?.focus();
+  },120);
 }
 function showNewListForm(){
-  document.getElementById('newListFormWrap').style.display='block';
-  _newListItems=[];renderNewListItems();
-  document.getElementById('newListItemInp')?.focus();
+  document.getElementById('listTypePicker').style.display='block';
+  document.getElementById('newListFormWrap').style.display='none';
+  _newListItems=[];
+  // reset card highlights
+  document.querySelectorAll('.list-type-card').forEach(c=>{
+    c.style.borderColor='var(--brd)';c.style.background='var(--s1)';
+  });
 }
-function cancelNewList(){document.getElementById('newListFormWrap').style.display='none';_newListItems=[];}
+function backToTypePicker(){
+  document.getElementById('newListFormWrap').style.display='none';
+  document.getElementById('listTypePicker').style.display='block';
+}
+function cancelNewList(){
+  document.getElementById('newListFormWrap').style.display='none';
+  document.getElementById('listTypePicker').style.display='none';
+  _newListItems=[];
+}
 function addNewListItem(){
   const inp=document.getElementById('newListItemInp');
   const val=inp.value.trim();if(!val)return;

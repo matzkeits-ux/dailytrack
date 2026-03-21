@@ -408,6 +408,24 @@ label{font-size:12px;color:var(--t2);font-weight:500;display:block;}
 .modal p{font-size:13px;color:var(--t2);margin-bottom:16px;line-height:1.6;}
 .modal-act{display:flex;gap:9px;justify-content:flex-end;margin-top:18px;}
 .streak{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,var(--orange),#fbbf24);border-radius:16px;padding:4px 12px;font-size:12px;font-weight:600;color:#fff;box-shadow:0 2px 8px rgba(249,115,22,.3);}
+
+[data-theme="sunset"]{--bg:#fdf2e9;--s1:#ffffff;--s2:#fef9f5;--s3:#fdebd0;--brd:#f9d4a8;--brd2:#f5b97e;--blue:#e67e22;--blue2:#d35400;--blue3:#fdebd0;--blue4:#fef5ec;--orange:#e74c3c;--orange2:#c0392b;--orange3:#fadbd8;--orange4:#fef9f8;--t1:#2c1810;--t2:#7d4e3b;--t3:#b8896d;}
+[data-theme="forest"]{--bg:#f0f7f0;--s1:#ffffff;--s2:#f4faf4;--s3:#e8f5e9;--brd:#c8e6c9;--brd2:#a5d6a7;--blue:#2e7d32;--blue2:#1b5e20;--blue3:#e8f5e9;--blue4:#f1f8e9;--orange:#f57f17;--orange2:#e65100;--orange3:#fff8e1;--orange4:#fffde7;--t1:#1a2e1a;--t2:#4a6741;--t3:#7a9b72;}
+[data-theme="ocean"]{--bg:#e8f4f8;--s1:#ffffff;--s2:#f0f8fb;--s3:#d6eef5;--brd:#a8d8ea;--brd2:#72c1d9;--blue:#0277bd;--blue2:#01579b;--blue3:#e1f5fe;--blue4:#e8f5fe;--orange:#ff6f00;--orange2:#e65100;--orange3:#fff3e0;--orange4:#fff8f0;--t1:#0a1a24;--t2:#2d5a72;--t3:#5a8fa6;}
+[data-theme="lavender"]{--bg:#f3f0fa;--s1:#ffffff;--s2:#f8f5fd;--s3:#ede7f6;--brd:#d1c4e9;--brd2:#b39ddb;--blue:#6a1b9a;--blue2:#4a148c;--blue3:#ede7f6;--blue4:#f3e5f5;--orange:#e91e63;--orange2:#c2185b;--orange3:#fce4ec;--orange4:#fdf0f5;--t1:#1a0a2e;--t2:#5a3d7a;--t3:#9575b0;}
+[data-theme="rosegold"]{--bg:#fdf0f0;--s1:#ffffff;--s2:#fdf5f5;--s3:#fae0e0;--brd:#f4b8b8;--brd2:#ec8f8f;--blue:#c0392b;--blue2:#a93226;--blue3:#fae0e0;--blue4:#fdf0f0;--orange:#e67e22;--orange2:#d35400;--orange3:#fef0e0;--orange4:#fef5ec;--t1:#2c0a0a;--t2:#7d3535;--t3:#b87070;}
+[data-theme="midnight"]{--bg:#0f0f1a;--s1:#1a1a2e;--s2:#16213e;--s3:#0f3460;--brd:#1e3a5f;--brd2:#2d5a8f;--blue:#4fc3f7;--blue2:#0288d1;--blue3:#0d2137;--blue4:#0a1929;--orange:#ff9800;--orange2:#f57c00;--orange3:#1a1000;--orange4:#120d00;--t1:#e8f4fd;--t2:#90b8d0;--t3:#4a7a9b;--shadow:0 1px 3px rgba(0,0,0,.3);--shadow2:0 4px 12px rgba(0,0,0,.4);}
+[data-theme="peach"]{--bg:#fff3ee;--s1:#ffffff;--s2:#fff8f5;--s3:#ffe8dd;--brd:#ffc8aa;--brd2:#ffaa80;--blue:#d84315;--blue2:#bf360c;--blue3:#fbe9e7;--blue4:#fff3f1;--orange:#f9a825;--orange2:#f57f17;--orange3:#fff8e1;--orange4:#fffde7;--t1:#2c1200;--t2:#7d4520;--t3:#b87850;}
+[data-theme="mint"]{--bg:#f0faf8;--s1:#ffffff;--s2:#f4fcfb;--s3:#e0f5f2;--brd:#b2dfdb;--brd2:#80cbc4;--blue:#00695c;--blue2:#004d40;--blue3:#e0f2f1;--blue4:#e8f5e9;--orange:#ff7043;--orange2:#e64a19;--orange3:#fbe9e7;--orange4:#fff3f1;--t1:#0a1f1e;--t2:#2d6b64;--t3:#5a9990;}
+[data-theme="galaxy"]{--bg:#0d0d1f;--s1:#13132b;--s2:#1a1a38;--s3:#222248;--brd:#2a2a5a;--brd2:#3a3a7a;--blue:#bb86fc;--blue2:#9c4dcc;--blue3:#1a0d2e;--blue4:#130a22;--orange:#ff6ec7;--orange2:#e040a0;--orange3:#1f0a1a;--orange4:#180716;--t1:#f0e6ff;--t2:#9a80c0;--t3:#5a4080;--shadow:0 1px 3px rgba(0,0,0,.4);--shadow2:0 4px 12px rgba(0,0,0,.5);}
+.theme-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;margin-top:10px;}
+.theme-swatch{border-radius:12px;padding:14px;cursor:pointer;border:2.5px solid transparent;transition:all .18s;position:relative;}
+.theme-swatch:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.15);}
+.ts-check{position:absolute;top:8px;right:8px;width:20px;height:20px;border-radius:50%;display:none;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;}
+.theme-swatch.active .ts-check{display:flex;}
+.ts-name{font-size:12px;font-weight:700;margin-bottom:8px;}
+.ts-dots{display:flex;gap:4px;}
+.ts-dot{width:14px;height:14px;border-radius:50%;}
 </style>
 </head>
 <body>
@@ -664,6 +682,55 @@ label{font-size:12px;color:var(--t2);font-weight:500;display:block;}
     </div>
   </div>
 
+
+  <!-- LISTEN -->
+  <div class="panel" id="tab-listen">
+    <div class="pane-hdr">
+      <div><div class="pane-title">Listen</div><div class="pane-sub" id="listenSub">Deine To-Do & Einkaufslisten</div></div>
+      <button class="btn btn-blue btn-sm" onclick="showNewListForm()">+ Neue Liste</button>
+    </div>
+    <div id="newListFormWrap" style="display:none;">
+      <div class="new-list-form">
+        <h4>Neue Liste erstellen</h4>
+        <label style="margin-bottom:6px;display:block;">Listentyp</label>
+        <div class="list-type-selector" id="listTypeSel">
+          <button class="list-type-opt active" data-type="shopping" onclick="selectListType(this)">🛒 Einkauf</button>
+          <button class="list-type-opt" data-type="todo" onclick="selectListType(this)">📝 Aufgaben</button>
+          <button class="list-type-opt" data-type="custom" onclick="selectListType(this)">✨ Eigene</button>
+        </div>
+        <div id="customListNameWrap" style="display:none;margin-bottom:10px;">
+          <label>Name der Liste</label>
+          <input id="customListName" type="text" placeholder="z.B. Packliste, Wunschliste…"/>
+        </div>
+        <label>Punkte hinzufügen</label>
+        <div style="display:flex;gap:8px;margin-top:5px;">
+          <input id="newListItemInp" type="text" placeholder="Punkt eingeben…" onkeydown="if(event.key==='Enter')addNewListItem()"/>
+          <button class="btn btn-blue btn-sm" onclick="addNewListItem()">+</button>
+        </div>
+        <div id="newListItems" style="margin-top:10px;display:flex;flex-direction:column;gap:5px;"></div>
+        <div style="display:flex;gap:8px;margin-top:14px;">
+          <button class="btn btn-blue btn-sm" onclick="createList()">✓ Liste erstellen</button>
+          <button class="btn btn-ghost btn-sm" onclick="cancelNewList()">Abbrechen</button>
+        </div>
+      </div>
+    </div>
+    <div class="list-cards" id="listCards"></div>
+  </div>
+
+  <!-- REMINDER MODAL -->
+  <div class="reminder-modal-bg" id="reminderModal">
+    <div class="reminder-sheet">
+      <h3 id="reminderTitle">Unerledigte Punkte</h3>
+      <p id="reminderMsg"></p>
+      <div class="reminder-items" id="reminderItems"></div>
+      <div class="reminder-actions">
+        <button class="btn btn-blue" onclick="reminderAction('carry')" style="width:100%;" id="reminderCarryBtn">→ Auf morgen übertragen</button>
+        <button class="btn btn-ghost" onclick="reminderAction('dismiss')" style="width:100%;">✓ Als erledigt markieren</button>
+        <button class="btn btn-ghost" onclick="reminderAction('delete')" style="width:100%;color:var(--red);">🗑️ Löschen</button>
+      </div>
+    </div>
+  </div>
+
   <!-- STATS -->
   <div class="panel" id="tab-stats">
     <div class="sg" id="sGrid"></div>
@@ -699,6 +766,10 @@ label{font-size:12px;color:var(--t2);font-weight:500;display:block;}
         <div id="kalGoalsSetting"></div>
       </div>
       <div class="set-s">
+        <h3>Design & Theme</h3>
+        <div class="theme-grid" id="themeGrid"></div>
+      </div>
+      <div class="set-s">
         <h3>Verbindung</h3>
         <p style="font-size:13px;color:var(--t2);margin-bottom:9px;">Sheet-ID: <code id="sidDisp" style="font-family:var(--mono);font-size:11px;background:var(--s2);padding:1px 7px;border-radius:4px;"></code></p>
         <div style="display:flex;gap:8px;">
@@ -711,6 +782,9 @@ label{font-size:12px;color:var(--t2);font-weight:500;display:block;}
 </div>
 
 <script>
+// Apply theme immediately to avoid flash
+(function(){const t=localStorage.getItem('tt_theme')||'arctic';document.documentElement.setAttribute('data-theme',t==='arctic'?'':t);})();
+
 const SCOPES='https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/drive.file';
 const DISC=['https://sheets.googleapis.com/$discovery/rest?version=v4','https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'];
 const META_SH='Meta',DATA_SH='Daten',SPORT_SH='Sport',KAL_SH='Kalorien';
@@ -757,6 +831,7 @@ let S={
   libTarget:null,  // {meal} or 'recipe'
   libTab:'library',
   scannedFood:null,html5QrCode:null,_searchResults:[],_pendingFood:null,_liveSuggestions:[],
+  lists:[],  // [{id,type,name,icon,items,date,archived,reminderDismissed}]
   saveTimer:null,sportSaveTimer:null,kalSaveTimer:null,
   lineChart:null,donutChart:null,sportChart:null,weightChart:null,
 };
@@ -931,7 +1006,8 @@ function showApp(){
   document.getElementById('hdrSub').textContent=S.sheetName;
   document.getElementById('sidDisp').textContent=S.spreadsheetId;
   document.getElementById('weightDate').value=today();
-  renderDashboard();renderExList();renderTaskEditor();renderExEditor();renderKalGoalsSetting();
+  loadTheme();renderDashboard();renderExList();renderTaskEditor();renderExEditor();renderKalGoalsSetting();
+  setTimeout(checkReminders,1000);
   // hide backBar initially
   document.getElementById('backBar').classList.remove('visible');
 }
@@ -945,6 +1021,7 @@ function getDashCards(){
     {id:'sport',icon:'💪',title:'Sport',color:'#22c55e',colorBg:'#f0fdf4'},
     {id:'kalorien',icon:'🥗',title:'Kalorien',color:'#f97316',colorBg:'#fff7ed'},
     {id:'stats',icon:'📈',title:'Statistik',color:'#a78bfa',colorBg:'#f5f3ff'},
+    {id:'listen',icon:'📋',title:'Listen',color:'#06b6d4',colorBg:'#ecfeff'},
     {id:'settings',icon:'⚙️',title:'Einstellungen',color:'#64748b',colorBg:'#f8fafc'},
   ];
 }
@@ -993,6 +1070,7 @@ function renderDashboard(){
     kalorien:{stat:kalTot.kcal>0?kalTot.kcal+' kcal':'-',info:kalTot.kcal>0?'von '+S.kalGoals.kcal+' kcal Ziel':'Noch nichts eingetragen'},
     stats:{stat:Object.values(S.data).filter(r=>r.some(v=>v===1)).length,info:'aktive Tage dieses Jahr'},
     settings:{stat:'',info:'Aufgaben & Ziele anpassen'},
+    listen:{stat:S.lists.filter(l=>!l.archived).length||'-',info:'aktive Listen'},
   };
 
   grid.innerHTML='';
@@ -1064,7 +1142,8 @@ function openSection(id,title){
   document.getElementById('backTitle').textContent=title;
   if(id==='stats')renderStats();
   if(id==='kalorien')renderKalPanel();
-  if(id==='settings'){renderTaskEditor();renderExEditor();renderKalGoalsSetting();}
+  if(id==='settings'){renderTaskEditor();renderExEditor();renderKalGoalsSetting();renderThemeSettings();}
+  if(id==='listen'){renderListCards();}
   if(id==='tracker')renderTracker();
 }
 
@@ -1797,6 +1876,160 @@ function saveKalGoals(){
   S.kalGoals={kcal:+document.getElementById('gKcal').value||2000,protein:+document.getElementById('gProt').value||150,carbs:+document.getElementById('gCarb').value||200,fat:+document.getElementById('gFat').value||70};
   renderKalPanel();schedKalSave();toast('Ziele gespeichert ✓');
 }
+
+// ══ THEMES ══
+const THEMES = [
+  { id:'arctic',   name:'Arctic',    bg:'#f0f2f5', s1:'#ffffff', accent:'#3b82f6', accent2:'#f97316', dot3:'#22c55e' },
+  { id:'sunset',   name:'Sunset',    bg:'#fdf2e9', s1:'#ffffff', accent:'#e67e22', accent2:'#e74c3c', dot3:'#f39c12' },
+  { id:'forest',   name:'Forest',    bg:'#f0f7f0', s1:'#ffffff', accent:'#2e7d32', accent2:'#f57f17', dot3:'#66bb6a' },
+  { id:'ocean',    name:'Ocean',     bg:'#e8f4f8', s1:'#ffffff', accent:'#0277bd', accent2:'#ff6f00', dot3:'#26c6da' },
+  { id:'lavender', name:'Lavender',  bg:'#f3f0fa', s1:'#ffffff', accent:'#6a1b9a', accent2:'#e91e63', dot3:'#ab47bc' },
+  { id:'rosegold', name:'Rose Gold', bg:'#fdf0f0', s1:'#ffffff', accent:'#c0392b', accent2:'#e67e22', dot3:'#ec407a' },
+  { id:'midnight', name:'Midnight',  bg:'#0f0f1a', s1:'#1a1a2e', accent:'#4fc3f7', accent2:'#ff9800', dot3:'#7c4dff' },
+  { id:'peach',    name:'Peach',     bg:'#fff3ee', s1:'#ffffff', accent:'#d84315', accent2:'#f9a825', dot3:'#ff7043' },
+  { id:'mint',     name:'Mint',      bg:'#f0faf8', s1:'#ffffff', accent:'#00695c', accent2:'#ff7043', dot3:'#26a69a' },
+  { id:'galaxy',   name:'Galaxy',    bg:'#0d0d1f', s1:'#13132b', accent:'#bb86fc', accent2:'#ff6ec7', dot3:'#64ffda' },
+];
+
+function applyTheme(id){
+  document.documentElement.setAttribute('data-theme', id==='arctic'?'':id);
+  localStorage.setItem('tt_theme', id);
+  renderThemeSettings();
+}
+
+function loadTheme(){
+  const saved=localStorage.getItem('tt_theme')||'arctic';
+  document.documentElement.setAttribute('data-theme', saved==='arctic'?'':saved);
+}
+
+function renderThemeSettings(){
+  const el=document.getElementById('themeGrid');if(!el)return;
+  const current=localStorage.getItem('tt_theme')||'arctic';
+  el.innerHTML=THEMES.map(t=>`
+    <div class="theme-swatch${t.id===current?' active':''}" onclick="applyTheme('${t.id}')"
+      style="background:${t.bg};border-color:${t.id===current?t.accent:'transparent'};">
+      <div class="ts-check">✓</div>
+      <div class="ts-name" style="color:${t.accent}">${t.name}</div>
+      <div class="ts-dots">
+        <div class="ts-dot" style="background:${t.accent}"></div>
+        <div class="ts-dot" style="background:${t.accent2}"></div>
+        <div class="ts-dot" style="background:${t.dot3}"></div>
+        <div class="ts-dot" style="background:${t.s1};border:1.5px solid ${t.accent}44;"></div>
+      </div>
+    </div>`).join('');
+}
+
+// ══ LISTEN ══
+const LIST_TYPES={
+  shopping:{label:'Einkauf',icon:'🛒',color:'#f97316',colorBg:'#fff7ed',taskName:'🛒 Einkauf erledigen'},
+  todo:{label:'Aufgaben',icon:'📝',color:'#3b82f6',colorBg:'#eff6ff',taskName:'📝 To-Do Liste erledigen'},
+  custom:{label:'Eigene',icon:'✨',color:'#a78bfa',colorBg:'#f5f3ff',taskName:'✨ Liste erledigen'},
+};
+let _newListType='shopping';
+let _newListItems=[];
+let _reminderList=null;
+
+function selectListType(btn){
+  document.querySelectorAll('.list-type-opt').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  _newListType=btn.dataset.type;
+  document.getElementById('customListNameWrap').style.display=_newListType==='custom'?'block':'none';
+}
+function showNewListForm(){
+  document.getElementById('newListFormWrap').style.display='block';
+  _newListItems=[];renderNewListItems();
+  document.getElementById('newListItemInp')?.focus();
+}
+function cancelNewList(){document.getElementById('newListFormWrap').style.display='none';_newListItems=[];}
+function addNewListItem(){
+  const inp=document.getElementById('newListItemInp');
+  const val=inp.value.trim();if(!val)return;
+  _newListItems.push({id:genId(),text:val,done:false});
+  inp.value='';inp.focus();renderNewListItems();
+}
+function renderNewListItems(){
+  const el=document.getElementById('newListItems');if(!el)return;
+  el.innerHTML=_newListItems.map((item,i)=>`<div style="display:flex;align-items:center;gap:8px;padding:7px 10px;background:var(--s1);border-radius:7px;border:1px solid var(--brd);margin-bottom:4px;"><span style="flex:1;font-size:13px;">${item.text}</span><button onclick="_newListItems.splice(${i},1);renderNewListItems()" style="background:none;border:none;color:var(--t3);cursor:pointer;">✕</button></div>`).join('');
+}
+function createList(){
+  if(!_newListItems.length){toast('Bitte mindestens einen Punkt hinzufügen','error');return;}
+  const type=_newListType;
+  const typeDef=LIST_TYPES[type];
+  const customName=type==='custom'?document.getElementById('customListName')?.value.trim()||'Eigene Liste':'';
+  const list={id:genId(),type,name:customName||typeDef.label,icon:typeDef.icon,items:[..._newListItems],date:today(),createdAt:Date.now()};
+  S.lists.push(list);
+  const taskName=customName?(typeDef.icon+' '+customName):typeDef.taskName;
+  S.tasks.push({id:genId(),name:taskName,time:'midday',_listId:list.id});
+  saveTasks(true);
+  cancelNewList();renderListCards();saveListData();
+  toast(list.icon+' '+list.name+' erstellt');
+}
+function renderListCards(){
+  const el=document.getElementById('listCards');if(!el)return;
+  const active=S.lists.filter(l=>!l.archived);
+  const sub=document.getElementById('listenSub');if(sub)sub.textContent=active.length+' aktive Listen';
+  if(!active.length){el.innerHTML='<p style="font-size:14px;color:var(--t3);padding:20px 0;">Noch keine Listen. Erstelle deine erste oben!</p>';return;}
+  el.innerHTML='';
+  active.forEach(list=>{
+    const td=LIST_TYPES[list.type]||LIST_TYPES.custom;
+    const done=list.items.filter(i=>i.done).length;
+    const total=list.items.length;
+    const pct=total>0?Math.round(done/total*100):0;
+    const card=document.createElement('div');card.className='list-card';
+    card.innerHTML=`
+      <div class="list-card-hdr">
+        <div class="list-card-title"><span>${list.icon||td.icon}</span><span>${list.name}</span><span class="list-type-badge" style="background:${td.colorBg};color:${td.color};">${td.label}</span></div>
+        <div style="display:flex;gap:8px;align-items:center;"><span class="list-card-meta">${done}/${total}</span><button onclick="archiveList('${list.id}')" class="btn btn-ghost btn-xs">Archivieren</button></div>
+      </div>
+      <div style="height:4px;background:var(--s3);border-radius:2px;margin-bottom:12px;"><div style="height:100%;width:${pct}%;background:${td.color};border-radius:2px;transition:width .3s;"></div></div>
+      <div>${list.items.map((item,i)=>`<div class="list-item${item.done?' done':''}" onclick="toggleListItem('${list.id}',${i})"><div class="li-ck">${item.done?'✓':''}</div><div class="li-text">${item.text}</div><button class="li-del" onclick="event.stopPropagation();deleteListItem('${list.id}',${i})">✕</button></div>`).join('')}</div>
+      <div class="list-add-row"><input type="text" placeholder="Punkt hinzufügen…" id="ladd-${list.id}" onkeydown="if(event.key==='Enter')addListItem('${list.id}',this)" style="margin:0;font-size:13px;"/><button class="btn btn-blue btn-sm" onclick="addListItem('${list.id}',document.getElementById('ladd-${list.id}'))">+</button></div>`;
+    el.appendChild(card);
+  });
+}
+function toggleListItem(listId,idx){const l=S.lists.find(x=>x.id===listId);if(!l)return;l.items[idx].done=!l.items[idx].done;renderListCards();saveListData();}
+function deleteListItem(listId,idx){const l=S.lists.find(x=>x.id===listId);if(!l)return;l.items.splice(idx,1);renderListCards();saveListData();}
+function addListItem(listId,input){const val=input.value.trim();if(!val)return;const l=S.lists.find(x=>x.id===listId);if(!l)return;l.items.push({id:genId(),text:val,done:false});input.value='';renderListCards();saveListData();}
+function archiveList(listId){
+  const l=S.lists.find(x=>x.id===listId);if(!l)return;l.archived=true;
+  S.tasks=S.tasks.filter(t=>t._listId!==listId);saveTasks(true);
+  renderListCards();saveListData();toast('Liste archiviert');
+}
+function checkReminders(){
+  const yesterday=fd(new Date(Date.now()-86400000));
+  const unfinished=S.lists.filter(l=>!l.archived&&l.date===yesterday&&l.items.some(i=>!i.done)&&!l.reminderDismissed);
+  if(unfinished.length)showReminder(unfinished[0]);
+}
+function showReminder(list){
+  _reminderList=list;
+  const pending=list.items.filter(i=>!i.done);
+  document.getElementById('reminderTitle').textContent=list.icon+' '+pending.length+' unerledigte Punkte';
+  document.getElementById('reminderMsg').textContent=list.type==='shopping'?'Diese Produkte wurden gestern nicht gekauft. Sollen sie auf eine neue Einkaufsliste übertragen werden?':'Diese Aufgaben wurden gestern nicht erledigt. Sollen sie auf morgen übertragen werden?';
+  document.getElementById('reminderItems').innerHTML=pending.map(i=>'<div class="ri-row"><div class="ri-dot"></div>'+i.text+'</div>').join('');
+  document.getElementById('reminderCarryBtn').textContent=list.type==='shopping'?'→ Neue Einkaufsliste erstellen':'→ Auf morgen übertragen';
+  document.getElementById('reminderModal').classList.add('active');
+}
+function reminderAction(action){
+  document.getElementById('reminderModal').classList.remove('active');
+  if(!_reminderList)return;
+  const list=_reminderList;
+  const pending=list.items.filter(i=>!i.done);
+  if(action==='carry'&&pending.length){
+    const td=LIST_TYPES[list.type]||LIST_TYPES.custom;
+    const newList={id:genId(),type:list.type,name:list.name,icon:list.icon,items:pending.map(i=>({id:genId(),text:i.text,done:false})),date:today(),createdAt:Date.now()};
+    S.lists.push(newList);
+    S.tasks.push({id:genId(),name:td.taskName,time:'midday',_listId:newList.id});
+    saveTasks(true);toast(pending.length+' Punkte übertragen');
+  } else if(action==='dismiss'){list.items.forEach(i=>i.done=true);toast('Als erledigt markiert');}
+  list.reminderDismissed=true;list.archived=true;
+  S.tasks=S.tasks.filter(t=>t._listId!==list.id);
+  saveTasks(true);renderListCards();saveListData();_reminderList=null;
+  setTimeout(checkReminders,500);
+}
+async function ensureListSheet(){try{const r=await gapi.client.sheets.spreadsheets.get({spreadsheetId:S.spreadsheetId});if(!r.result.sheets.map(s=>s.properties.title).includes('Listen'))await gapi.client.sheets.spreadsheets.batchUpdate({spreadsheetId:S.spreadsheetId,resource:{requests:[{addSheet:{properties:{title:'Listen'}}}]}});}catch(e){}}
+async function loadListData(){try{await ensureListSheet();const r=await gapi.client.sheets.spreadsheets.values.get({spreadsheetId:S.spreadsheetId,range:'Listen!A:B'});const rows=r.result.values||[];const row=rows.find(r=>r[0]==='lists');if(row&&row[1])S.lists=JSON.parse(row[1]);}catch(e){console.error('listLoad',e);}}
+async function saveListData(){try{await ensureListSheet();await gapi.client.sheets.spreadsheets.values.update({spreadsheetId:S.spreadsheetId,range:'Listen!A1',valueInputOption:'RAW',resource:{values:[['lists',JSON.stringify(S.lists)]]}});}catch(e){console.error('listSave',e);}}
+
 
 // STATS
 function renderStats(){

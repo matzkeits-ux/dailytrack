@@ -164,6 +164,56 @@ label{font-size:12px;color:var(--t2);font-weight:500;display:block;}
 .prog-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--blue),#60a5fa);transition:width .3s ease;}
 .prog-lbl{font-size:11px;color:var(--t3);font-family:var(--mono);min-width:30px;text-align:right;}
 
+
+/* ── DASHBOARD ── */
+.dash-screen{padding:0;min-height:calc(100vh - 65px);}
+.dash-header{padding:20px 20px 12px;background:var(--s1);border-bottom:1px solid var(--brd);}
+.dash-greeting h2{font-size:20px;font-weight:700;color:var(--t1);}
+.dash-greeting p{font-size:13px;color:var(--t2);margin-top:2px;}
+.dash-meta{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap;}
+.dash-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;}
+.dash-badge-streak{background:linear-gradient(135deg,#f97316,#fbbf24);color:#fff;box-shadow:0 2px 8px rgba(249,115,22,.25);}
+.dash-badge-tasks{background:var(--blue4);color:var(--blue2);}
+.dash-badge-kal{background:var(--orange4);color:var(--orange2);}
+.dash-grid-wrap{padding:16px;}
+.dash-grid{display:grid;gap:12px;}
+.dash-grid.g1{grid-template-columns:1fr;}
+.dash-grid.g2{grid-template-columns:repeat(2,1fr);}
+.dash-grid.g3{grid-template-columns:repeat(3,1fr);}
+.dash-grid.g4{grid-template-columns:repeat(2,1fr);}
+@media(min-width:700px){
+  .dash-grid.g3{grid-template-columns:repeat(3,1fr);}
+  .dash-grid.g4{grid-template-columns:repeat(4,1fr);}
+}
+.dash-card{
+  background:var(--s1);border:1.5px solid var(--brd);border-radius:16px;
+  padding:20px 18px;cursor:pointer;transition:all .18s;
+  display:flex;flex-direction:column;gap:8px;
+  box-shadow:var(--shadow);min-height:130px;
+  user-select:none;position:relative;
+}
+.dash-card:hover{box-shadow:var(--shadow2);transform:translateY(-2px);}
+.dash-card:active{transform:scale(.97);}
+.dash-card.dragging{opacity:.4;transform:scale(.96);}
+.dash-card.drag-over{border-color:var(--blue);background:var(--blue4);}
+.dc-icon{font-size:32px;line-height:1;}
+.dc-title{font-size:16px;font-weight:700;color:var(--t1);}
+.dc-info{font-size:12px;color:var(--t2);line-height:1.5;}
+.dc-stat{font-size:22px;font-weight:700;font-family:var(--mono);}
+.dc-drag-hint{position:absolute;top:10px;right:12px;font-size:14px;color:var(--brd2);opacity:0;transition:opacity .2s;}
+.dash-card:hover .dc-drag-hint{opacity:1;}
+/* Edit mode */
+.dash-edit-mode .dash-card{animation:wiggle .5s ease infinite alternate;}
+@keyframes wiggle{from{transform:rotate(-.8deg)}to{transform:rotate(.8deg)}}
+.dash-edit-mode .dash-card:active{animation:none;transform:scale(.97);}
+.dash-edit-btn{position:absolute;top:-6px;right:-6px;width:22px;height:22px;border-radius:50%;background:var(--red);color:#fff;border:2px solid var(--bg);font-size:12px;display:none;align-items:center;justify-content:center;cursor:pointer;z-index:10;}
+.dash-edit-mode .dash-edit-btn{display:flex;}
+/* Back button in panels */
+.back-bar{display:none;padding:12px 20px;background:var(--s1);border-bottom:1px solid var(--brd);align-items:center;gap:12px;}
+.back-bar.visible{display:flex;}
+.back-btn{background:none;border:none;color:var(--blue);font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;padding:0;font-family:var(--font);}
+.back-title{font-size:15px;font-weight:700;color:var(--t1);}
+
 /* ── SPORT ── */
 .sport-layout{display:grid;grid-template-columns:230px 1fr;gap:16px;}
 @media(max-width:800px){.sport-layout{grid-template-columns:1fr;}}
@@ -471,21 +521,38 @@ label{font-size:12px;color:var(--t2);font-weight:500;display:block;}
       <div><div class="logo-text">Daily Tracker</div><div class="logo-sub" id="hdrSub">–</div></div>
     </div>
     <div class="hdr-r">
-      <div id="streakEl"></div>
+      <div id="streakEl" style="display:none;"></div>
       <button class="btn btn-ghost btn-sm" onclick="syncNow()"><span id="syncIco">↻</span> Sync</button>
       <button class="btn btn-ghost btn-sm" onclick="logout()">Logout</button>
     </div>
   </header>
-  <div class="nav">
-    <button class="ntab active" onclick="switchTab('tracker',this)">📋 Aufgaben</button>
-    <button class="ntab" onclick="switchTab('sport',this)">💪 Sport</button>
-    <button class="ntab" onclick="switchTab('kalorien',this)">🥗 Kalorien</button>
-    <button class="ntab" onclick="switchTab('stats',this)">📈 Statistik</button>
-    <button class="ntab" onclick="switchTab('settings',this)">⚙️ Einstellungen</button>
+  <div class="back-bar" id="backBar">
+    <button class="back-btn" onclick="goHome()">← Zurück</button>
+    <span class="back-title" id="backTitle"></span>
+  </div>
+
+
+  <!-- DASHBOARD -->
+  <div id="tab-dashboard" class="panel active">
+    <div class="dash-screen">
+      <div class="dash-header">
+        <div class="dash-greeting">
+          <h2 id="dashGreeting">Guten Morgen! 👋</h2>
+          <p id="dashDate">–</p>
+        </div>
+        <div class="dash-meta" id="dashMeta"></div>
+      </div>
+      <div class="dash-grid-wrap">
+        <div class="dash-grid" id="dashGrid"></div>
+      </div>
+      <div style="text-align:center;padding:8px 0 16px;">
+        <button onclick="toggleDashEdit()" id="dashEditBtn" style="background:none;border:1px solid var(--brd);border-radius:20px;padding:6px 16px;font-size:12px;color:var(--t2);cursor:pointer;font-family:var(--font);">✏️ Reihenfolge ändern</button>
+      </div>
+    </div>
   </div>
 
   <!-- TRACKER -->
-  <div class="panel active" id="tab-tracker">
+  <div class="panel" id="tab-tracker">
     <div class="pane-hdr">
       <div><div class="pane-title" id="trkTitle">Aufgaben</div><div class="pane-sub" id="trkSub">–</div></div>
       <div class="pane-ctrl">
@@ -864,16 +931,152 @@ function showApp(){
   document.getElementById('hdrSub').textContent=S.sheetName;
   document.getElementById('sidDisp').textContent=S.spreadsheetId;
   document.getElementById('weightDate').value=today();
-  renderTracker();renderExList();renderTaskEditor();renderExEditor();renderKalGoalsSetting();updateStreak();
+  renderDashboard();renderExList();renderTaskEditor();renderExEditor();renderKalGoalsSetting();
+  // hide backBar initially
+  document.getElementById('backBar').classList.remove('visible');
 }
 
-function switchTab(id,el){
-  document.querySelectorAll('.ntab').forEach(t=>t.classList.remove('active'));
+// Dashboard config stored in localStorage
+function getDashCards(){
+  const saved=localStorage.getItem('tt_dashCards');
+  if(saved)return JSON.parse(saved);
+  return[
+    {id:'tracker',icon:'📋',title:'Aufgaben',color:'#3b82f6',colorBg:'#eff6ff'},
+    {id:'sport',icon:'💪',title:'Sport',color:'#22c55e',colorBg:'#f0fdf4'},
+    {id:'kalorien',icon:'🥗',title:'Kalorien',color:'#f97316',colorBg:'#fff7ed'},
+    {id:'stats',icon:'📈',title:'Statistik',color:'#a78bfa',colorBg:'#f5f3ff'},
+    {id:'settings',icon:'⚙️',title:'Einstellungen',color:'#64748b',colorBg:'#f8fafc'},
+  ];
+}
+function saveDashCards(cards){localStorage.setItem('tt_dashCards',JSON.stringify(cards));}
+
+let dashEditMode=false;
+function toggleDashEdit(){
+  dashEditMode=!dashEditMode;
+  document.getElementById('dashGrid').classList.toggle('dash-edit-mode',dashEditMode);
+  document.getElementById('dashEditBtn').textContent=dashEditMode?'✓ Fertig':'✏️ Reihenfolge ändern';
+  document.getElementById('dashEditBtn').style.color=dashEditMode?'var(--blue)':'var(--t2)';
+}
+
+function renderDashboard(){
+  const now=new Date();
+  const h=now.getHours();
+  // greeting in next line
+  document.getElementById('dashGreeting').textContent=(h<12?'Guten Morgen! ☀️':h<17?'Guten Nachmittag! 🌤️':'Guten Abend! 🌙');
+  const days=['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'];
+  const months=['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
+  document.getElementById('dashDate').textContent=`${days[now.getDay()]}, ${now.getDate()}. ${months[now.getMonth()]} ${now.getFullYear()}`;
+
+  // Meta badges
+  const t=today();
+  const todayDone=(S.data[t]||[]).filter(v=>v===1).length;
+  const kalTot=kalTotals(t);
+  let streak=0;let d=new Date();
+  for(let i=0;i<400;i++){const ds=fd(d);if(ds>t){d.setDate(d.getDate()-1);continue;}const done=(S.data[ds]||[]).filter(v=>v===1).length;if(done>0)streak++;else if(ds===t){d.setDate(d.getDate()-1);continue;}else break;d.setDate(d.getDate()-1);}
+  const meta=document.getElementById('dashMeta');
+  meta.innerHTML='';
+  if(streak>1){const b=document.createElement('div');b.className='dash-badge dash-badge-streak';b.textContent='🔥 '+streak+' Tage Streak';meta.appendChild(b);}
+  const bt=document.createElement('div');bt.className='dash-badge dash-badge-tasks';bt.textContent='✅ '+todayDone+'/'+S.tasks.length+' Aufgaben';meta.appendChild(bt);
+  if(kalTot.kcal>0){const bk=document.createElement('div');bk.className='dash-badge dash-badge-kal';bk.textContent='🔥 '+kalTot.kcal+' kcal';meta.appendChild(bk);}
+
+  // Cards grid
+  const cards=getDashCards();
+  const n=cards.length;
+  const grid=document.getElementById('dashGrid');
+  grid.className='dash-grid '+(n<=1?'g1':n===2?'g2':n===3?'g3':'g4');
+
+  // Stats for each card
+  const lastSport=Object.entries(S.sportLogs).flatMap(([id,logs])=>logs.map(l=>({...l,exId:id}))).sort((a,b)=>b.date.localeCompare(a.date))[0];
+  const cardStats={
+    tracker:{stat:todayDone+'/'+S.tasks.length,info:'Aufgaben heute erledigt'},
+    sport:{stat:lastSport?lastSport.date.split('-').reverse().slice(0,2).join('.'):'-',info:lastSport?(S.exercises.find(e=>e.id===lastSport.exId)||{name:'–'}).name:'Noch kein Training'},
+    kalorien:{stat:kalTot.kcal>0?kalTot.kcal+' kcal':'-',info:kalTot.kcal>0?'von '+S.kalGoals.kcal+' kcal Ziel':'Noch nichts eingetragen'},
+    stats:{stat:Object.values(S.data).filter(r=>r.some(v=>v===1)).length,info:'aktive Tage dieses Jahr'},
+    settings:{stat:'',info:'Aufgaben & Ziele anpassen'},
+  };
+
+  grid.innerHTML='';
+  let dragSrc=null;
+  cards.forEach((card,idx)=>{
+    const st=cardStats[card.id]||{stat:'',info:''};
+    const div=document.createElement('div');
+    div.className='dash-card';
+    div.dataset.idx=idx;
+    div.style.borderColor=card.colorBg;
+    div.style.background=`linear-gradient(135deg,${card.colorBg},var(--s1))`;
+    div.innerHTML=`
+      <div class="dc-drag-hint">⠿</div>
+      <div class="dc-icon">${card.icon}</div>
+      <div class="dc-title" style="color:${card.color}">${card.title}</div>
+      ${st.stat?`<div class="dc-stat" style="color:${card.color}">${st.stat}</div>`:''}
+      <div class="dc-info">${st.info}</div>
+    `;
+
+    // Click to navigate
+    div.onclick=()=>{
+      if(dashEditMode)return;
+      openSection(card.id,card.title);
+    };
+
+    // Drag & drop desktop
+    div.draggable=true;
+    div.addEventListener('dragstart',e=>{dragSrc=idx;div.classList.add('dragging');});
+    div.addEventListener('dragend',()=>{div.classList.remove('dragging');document.querySelectorAll('.dash-card').forEach(c=>c.classList.remove('drag-over'));});
+    div.addEventListener('dragover',e=>{e.preventDefault();div.classList.add('drag-over');});
+    div.addEventListener('dragleave',()=>div.classList.remove('drag-over'));
+    div.addEventListener('drop',e=>{
+      e.preventDefault();div.classList.remove('drag-over');
+      if(dragSrc===null||dragSrc===idx)return;
+      const newCards=getDashCards();
+      const moved=newCards.splice(dragSrc,1)[0];
+      newCards.splice(idx,0,moved);
+      saveDashCards(newCards);dragSrc=null;
+      renderDashboard();
+    });
+
+    // Touch drag
+    let touchDragIdx=null,touchClone=null;
+    div.addEventListener('touchstart',e=>{if(!dashEditMode)return;touchDragIdx=idx;div.style.opacity='.4';},{passive:true});
+    div.addEventListener('touchmove',e=>{
+      if(!dashEditMode||touchDragIdx===null)return;e.preventDefault();
+      const t=e.touches[0];
+      const els=[...document.querySelectorAll('.dash-card')];
+      const target=els.find(el=>{const r=el.getBoundingClientRect();return t.clientX>=r.left&&t.clientX<=r.right&&t.clientY>=r.top&&t.clientY<=r.bottom;});
+      if(target&&+target.dataset.idx!==touchDragIdx){
+        const ti=+target.dataset.idx;
+        const newCards=getDashCards();
+        const moved=newCards.splice(touchDragIdx,1)[0];
+        newCards.splice(ti,0,moved);
+        saveDashCards(newCards);touchDragIdx=ti;
+        renderDashboard();
+      }
+    },{passive:false});
+    div.addEventListener('touchend',()=>{div.style.opacity='1';touchDragIdx=null;});
+
+    grid.appendChild(div);
+  });
+}
+
+function openSection(id,title){
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
-  el.classList.add('active');document.getElementById('tab-'+id).classList.add('active');
+  document.getElementById('tab-'+id)?.classList.add('active');
+  document.getElementById('backBar').classList.add('visible');
+  document.getElementById('backTitle').textContent=title;
   if(id==='stats')renderStats();
   if(id==='kalorien')renderKalPanel();
   if(id==='settings'){renderTaskEditor();renderExEditor();renderKalGoalsSetting();}
+  if(id==='tracker')renderTracker();
+}
+
+function goHome(){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('tab-dashboard').classList.add('active');
+  document.getElementById('backBar').classList.remove('visible');
+  renderDashboard();
+}
+
+function switchTab(id,el){
+  openSection(id, el?.textContent?.trim()||id);
 }
 
 // TRACKER
@@ -1122,19 +1325,42 @@ function addFromLibrary(id){
   const picker=document.createElement('div');
   picker.id='amountPicker';
   picker.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:800;display:flex;align-items:center;justify-content:center;padding:20px;';
+  // Smart serving label for library items
+  const fname=(f.name||'').toLowerCase();
+  let servingG=f.serving||null;
+  let servingLabel='1 Portion';
+  if(!servingG){
+    if(fname.includes('ei')){servingG=60;servingLabel='1 Ei';}
+    else if(fname.includes('banane')){servingG=120;servingLabel='1 Banane';}
+    else if(fname.includes('apfel')){servingG=150;servingLabel='1 Apfel';}
+    else if(fname.includes('joghurt')||fname.includes('becher')){servingG=150;servingLabel='1 Becher';}
+    else if(fname.includes('scheibe')||fname.includes('brot')){servingG=45;servingLabel='1 Scheibe';}
+    else if(fname.includes('milch')){servingG=200;servingLabel='1 Glas';}
+    else if(fname.includes('käse')){servingG=30;servingLabel='1 Scheibe';}
+  }
+  const defaultAmt=servingG||100;
   picker.innerHTML=`<div style="background:var(--s1);border-radius:14px;padding:24px;width:100%;max-width:340px;box-shadow:0 20px 60px rgba(0,0,0,.15);">
     <h3 style="font-size:15px;font-weight:700;margin-bottom:4px;">${f.name}</h3>
-    <p style="font-size:12px;color:var(--t3);margin-bottom:16px;">🔥 ${f.kcal} kcal · 💪 ${f.protein}g · 🍞 ${f.carbs}g · 🫙 ${f.fat}g <span style="color:var(--t3);">(pro 100g)</span></p>
-    <label style="font-size:12px;color:var(--t2);margin-bottom:4px;display:block;">Menge (g / ml)</label>
-    <input id="pickAmount" type="number" value="100" min="1" style="font-family:var(--mono);font-weight:600;font-size:18px;text-align:center;margin-bottom:16px;" autofocus/>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;">
-      ${[50,75,100,125,150,200,250,300].map(g=>`<button onclick="document.getElementById('pickAmount').value=${g}" style="padding:5px 10px;border-radius:6px;border:1px solid var(--brd);background:var(--s2);font-size:12px;font-family:var(--font);cursor:pointer;">${g}g</button>`).join('')}
+    <p style="font-size:12px;color:var(--t3);margin-bottom:12px;">🔥 ${f.kcal} kcal · 💪 ${f.protein}g · 🍞 ${f.carbs}g · 🫙 ${f.fat}g <span style="color:var(--t3);">(pro 100g)</span></p>
+    <label style="font-size:12px;color:var(--t2);margin-bottom:6px;display:block;">Menge (g / ml)</label>
+    <input id="pickAmount" type="number" value="${defaultAmt}" min="1" style="font-family:var(--mono);font-weight:600;font-size:18px;text-align:center;margin-bottom:12px;" autofocus/>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;">
+      ${servingG?`<button onclick="document.getElementById('pickAmount').value=${servingG}" style="padding:5px 12px;border-radius:7px;border:1.5px solid var(--blue);background:var(--blue4);color:var(--blue);font-size:12px;font-weight:600;font-family:var(--font);cursor:pointer;">${servingLabel} (${servingG}g)</button>`:''}
+      ${[50,100,150,200,250,300].map(g=>`<button onclick="document.getElementById('pickAmount').value=${g}" style="padding:5px 10px;border-radius:7px;border:1px solid var(--brd);background:var(--s2);font-size:12px;font-family:var(--font);cursor:pointer;">${g}g</button>`).join('')}
     </div>
+    <p id="pickCalcInfo" style="font-size:12px;color:var(--blue);font-family:var(--mono);margin-bottom:12px;text-align:center;"></p>
     <div style="display:flex;gap:8px;">
       <button onclick="confirmAmountPick()" class="btn btn-blue" style="flex:1;">+ Hinzufügen</button>
       <button onclick="document.getElementById('amountPicker').remove()" class="btn btn-ghost" style="flex:0 0 auto;">Abbrechen</button>
     </div>
   </div>`;
+  // Live kcal preview
+  const inp=picker.querySelector('#pickAmount');
+  const info=picker.querySelector('#pickCalcInfo');
+  if(inp&&info){
+    const update=()=>{const g=parseFloat(inp.value)||0;info.textContent=g>0?`= ${Math.round(f.kcal*g/100)} kcal`:'';}; 
+    inp.addEventListener('input',update);update();
+  }
   document.body.appendChild(picker);
   setTimeout(()=>document.getElementById('pickAmount')?.select(),100);
 }
@@ -1175,6 +1401,7 @@ function renderManualTab(body){
         <div><label>Fett (g)</label><input id="manFat" type="number" placeholder="0" style="font-family:var(--mono);"/></div>
       </div>
     </div>
+    <div id="manServingButtons"></div>
     <label style="margin-top:10px;display:block;">Menge (g/ml)</label>
     <input id="manAmount" type="number" value="100" style="font-family:var(--mono);"/>
     <button class="btn btn-blue" onclick="addManualFood()" style="width:100%;margin-top:12px;">+ Hinzufügen & speichern</button>
@@ -1191,7 +1418,7 @@ async function liveSearchFood(query){
     box.style.display='block';
     box.innerHTML='<div style="padding:10px 14px;font-size:12px;color:var(--t3);">Suche…</div>';
     try{
-      const apiUrl=`https://world.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(query)}&search_simple=1&action=process&json=1&page_size=10&fields=product_name,product_name_de,nutriments&sort_by=unique_scans_n&lc=de&cc=de`;
+      const apiUrl=`https://world.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(query)}&search_simple=1&action=process&json=1&page_size=10&fields=product_name,product_name_de,nutriments,serving_size,serving_quantity&sort_by=unique_scans_n&lc=de&cc=de`;
       const r=await fetch(apiUrl);
       const data=await r.json();
       let products=(data.products||[]).filter(p=>{
@@ -1236,15 +1463,107 @@ function selectSuggestion(i){
   document.getElementById('manProt').value=+(n.proteins_100g||0).toFixed(1);
   document.getElementById('manCarb').value=+(n.carbohydrates_100g||0).toFixed(1);
   document.getElementById('manFat').value=+(n.fat_100g||0).toFixed(1);
+  // Extract serving size from OFF
+  const servingG = parseServingSize(p);
+  const servingLabel = p.serving_size||'';
+  renderServingButtons(servingG, servingLabel, name);
   const box=document.getElementById('manSuggestions');
   if(box)box.style.display='none';
   document.getElementById('manAmount').focus();
 }
 
+function parseServingSize(p){
+  // Try to get serving size in grams from OFF data
+  const n=p.nutriments||{};
+  // serving_quantity is in grams when available
+  if(n.serving_size) return Math.round(parseFloat(n.serving_size));
+  if(p.serving_quantity) return Math.round(parseFloat(p.serving_quantity));
+  // Parse from serving_size string like "1 Stück (53 g)" or "53g"
+  if(p.serving_size){
+    const match=p.serving_size.match(/(\d+(?:\.\d+)?)\s*g/i);
+    if(match) return Math.round(parseFloat(match[1]));
+  }
+  // Fallback: common serving sizes by keyword
+  const name=(p.product_name_de||p.product_name||'').toLowerCase();
+  if(name.includes('ei')||name.includes('egg')) return 60;
+  if(name.includes('scheibe')||name.includes('brot')) return 45;
+  if(name.includes('banane')||name.includes('banana')) return 120;
+  if(name.includes('apfel')||name.includes('apple')) return 150;
+  if(name.includes('joghurt')||name.includes('yogurt')) return 150;
+  if(name.includes('milch')||name.includes('milk')) return 200;
+  if(name.includes('käse')||name.includes('cheese')) return 30;
+  if(name.includes('butter')||name.includes('margarine')) return 10;
+  if(name.includes('öl')||name.includes('oil')) return 10;
+  if(name.includes('zucker')||name.includes('sugar')) return 10;
+  return null;
+}
+
+function renderServingButtons(servingG, servingLabel, productName){
+  const el=document.getElementById('manServingButtons');
+  if(!el)return;
+  // Generate smart serving label
+  const name=(productName||'').toLowerCase();
+  let label='1 Portion';
+  if(name.includes('ei')||name.includes('egg')) label='1 Ei';
+  else if(name.includes('scheibe')) label='1 Scheibe';
+  else if(name.includes('banane')) label='1 Banane';
+  else if(name.includes('apfel')) label='1 Apfel';
+  else if(name.includes('becher')||name.includes('joghurt')) label='1 Becher';
+  else if(servingLabel) label=servingLabel.split('(')[0].trim()||'1 Portion';
+  
+  const grams = servingG || 100;
+  el.innerHTML=`
+    <div style="margin-top:10px;">
+      <label style="font-size:11px;color:var(--t2);display:block;margin-bottom:6px;">Schnellauswahl Menge</label>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+        ${servingG?`<button onclick="setAmount(${servingG})" class="serving-btn" style="background:var(--blue4);border:1.5px solid var(--blue);color:var(--blue);border-radius:7px;padding:5px 12px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font);">${label} (${servingG}g)</button>`:''}
+        ${[50,100,150,200,250,300].map(g=>`<button onclick="setAmount(${g})" class="serving-btn" style="background:var(--s2);border:1px solid var(--brd);color:var(--t1);border-radius:7px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:var(--font);">${g}g</button>`).join('')}
+      </div>
+      <div style="margin-top:8px;display:flex;align-items:center;gap:8px;">
+        <label style="font-size:11px;color:var(--t2);white-space:nowrap;">Eigene Portion:</label>
+        <input id="customServingLabel" type="text" placeholder="z.B. 1 Stück" style="flex:1;margin:0;font-size:12px;padding:5px 8px;"/>
+        <input id="customServingG" type="number" placeholder="g" style="width:70px;margin:0;font-size:12px;font-family:var(--mono);padding:5px 8px;"/>
+        <button onclick="addCustomServing()" style="background:var(--s2);border:1px solid var(--brd);border-radius:6px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:var(--font);">+ Merken</button>
+      </div>
+    </div>`;
+}
+
+function setAmount(g){
+  const inp=document.getElementById('manAmount');
+  if(inp){inp.value=g;inp.style.background='var(--blue4)';setTimeout(()=>inp.style.background='',600);}
+}
+
+function addCustomServing(){
+  const label=document.getElementById('customServingLabel')?.value.trim();
+  const g=parseFloat(document.getElementById('customServingG')?.value);
+  if(!label||!g)return;
+  // Add as quick button
+  const container=document.querySelector('#manServingButtons .serving-btn')?.parentElement;
+  if(container){
+    const btn=document.createElement('button');
+    btn.onclick=()=>setAmount(g);
+    btn.className='serving-btn';
+    btn.style.cssText='background:var(--orange3);border:1.5px solid var(--orange);color:var(--orange2);border-radius:7px;padding:5px 12px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font);';
+    btn.textContent=`${label} (${g}g)`;
+    container.insertBefore(btn,container.firstChild);
+  }
+  document.getElementById('customServingLabel').value='';
+  document.getElementById('customServingG').value='';
+  toast(`${label} gespeichert ✓`);
+}
+
 function addManualFood(){
   const name=document.getElementById('manName')?.value.trim();
   if(!name){toast('Bitte Name eingeben','error');return;}
-  const food={id:genId(),name,kcal:+document.getElementById('manKcal')?.value||0,protein:+document.getElementById('manProt')?.value||0,carbs:+document.getElementById('manCarb')?.value||0,fat:+document.getElementById('manFat')?.value||0,fav:false,useCount:1};
+  const food={id:genId(),name,kcal:+document.getElementById('manKcal')?.value||0,protein:+document.getElementById('manProt')?.value||0,carbs:+document.getElementById('manCarb')?.value||0,fat:+document.getElementById('manFat')?.value||0,fav:false,useCount:1,serving:getDefaultServing()};
+
+function getDefaultServing(){
+  // Check if there's a highlighted serving button
+  const btns=[...document.querySelectorAll('.serving-btn')];
+  const primary=btns.find(b=>b.style.background.includes('blue4')||b.style.background.includes('orange3'));
+  if(primary){const m=primary.textContent.match(/(\d+)g/);if(m)return+m[1];}
+  return null;
+}
   // save to library
   if(!S.foodLibrary.find(f=>f.name.toLowerCase()===name.toLowerCase()))S.foodLibrary.push(food);
   const amount=+document.getElementById('manAmount')?.value||100;

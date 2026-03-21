@@ -1191,9 +1191,19 @@ async function liveSearchFood(query){
     box.style.display='block';
     box.innerHTML='<div style="padding:10px 14px;font-size:12px;color:var(--t3);">Suche…</div>';
     try{
-      const res=await fetch(`https://world.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(query)}&search_simple=1&action=process&json=1&page_size=6&fields=product_name,product_name_de,nutriments`);
-      const data=await res.json();
-      const products=(data.products||[]).filter(p=>(p.product_name_de||p.product_name)&&p.nutriments);
+      const apiUrl=`https://world.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(query)}&search_simple=1&action=process&json=1&page_size=10&fields=product_name,product_name_de,nutriments&sort_by=unique_scans_n&lc=de&cc=de`;
+      const r=await fetch(apiUrl);
+      const data=await r.json();
+      let products=(data.products||[]).filter(p=>{
+        const n=p.nutriments||{};
+        const name=p.product_name_de||p.product_name||'';
+        return name.length>0 && (n['energy-kcal_100g']>0||n['energy-kcal']>0);
+      });
+      // Sort: German name first, then by scan count
+      products.sort((a,b)=>(b.product_name_de?1:0)-(a.product_name_de?1:0));
+      products=products.slice(0,6);
+      const res={ok:true};
+
       if(!products.length){
         box.innerHTML='<div style="padding:10px 14px;font-size:12px;color:var(--t3);">Keine Treffer – bitte manuell eintragen</div>';
         return;
@@ -1201,7 +1211,7 @@ async function liveSearchFood(query){
       box.innerHTML=products.map((p,i)=>{
         const n=p.nutriments;
         const name=p.product_name_de||p.product_name||'';
-        const kcal=+(n['energy-kcal_100g']||0).toFixed(0);
+        const kcal=+(n['energy-kcal_100g']||n['energy-kcal']||n['energy_100g']/4.184||0).toFixed(0);
         const prot=+(n.proteins_100g||0).toFixed(1);
         const carb=+(n.carbohydrates_100g||0).toFixed(1);
         const fat=+(n.fat_100g||0).toFixed(1);
@@ -1222,7 +1232,7 @@ function selectSuggestion(i){
   const n=p.nutriments;
   const name=p.product_name_de||p.product_name||'';
   document.getElementById('manName').value=name;
-  document.getElementById('manKcal').value=+(n['energy-kcal_100g']||0).toFixed(1);
+  document.getElementById('manKcal').value=+(n['energy-kcal_100g']||n['energy-kcal']||n['energy_100g']/4.184||0).toFixed(1);
   document.getElementById('manProt').value=+(n.proteins_100g||0).toFixed(1);
   document.getElementById('manCarb').value=+(n.carbohydrates_100g||0).toFixed(1);
   document.getElementById('manFat').value=+(n.fat_100g||0).toFixed(1);
